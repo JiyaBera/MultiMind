@@ -26,6 +26,7 @@
   </ul>
 
   <h2>🚀 Getting Started</h2>
+
   <div class="section">
     <h3>📦 Prerequisites</h3>
     <ul>
@@ -34,7 +35,9 @@
       <li>An IDE like VS Code or Android Studio</li>
       <li>Internet connection (for fetching responses from AI APIs)</li>
     </ul>
+  </div>
 
+  <div class="section">
     <h3>🔧 Setup Instructions</h3>
     <ol>
       <li><strong>Clone the Repository:</strong>
