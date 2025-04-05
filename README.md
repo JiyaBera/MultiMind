@@ -1,64 +1,116 @@
-🧠 MultiMind – Converse with a Chorus of AIs
-MultiMind is an AI-powered Flutter web application that takes chatting with AI to a whole new level. Instead of getting a single response to your prompt, you get multiple perspectives from multiple AI personas—all at once.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MultiMind – Converse with a Chorus of AIs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul li::before {
+      content: "✨ ";
+      margin-right: 5px;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    pre {
+      background-color: #eee;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
 
-Whether you’re brainstorming, seeking advice, learning something new, or just curious how different minds might interpret your question—MultiMind delivers diverse, insightful, and even surprising answers with every prompt.
+  <h1>🧠 MultiMind – Converse with a Chorus of AIs</h1>
 
-✨ Key Features
-💬 One Prompt, Many Minds: Get responses from multiple AI models or personas in parallel.
+  <div class="section">
+    <p><strong>MultiMind</strong> is an AI-powered Flutter web application that takes chatting with AI to a whole new level. Instead of getting a single response to your prompt, you get <strong>multiple perspectives from multiple AI personas</strong>—all at once.</p>
+    <p>Whether you’re brainstorming, seeking advice, learning something new, or just curious how different minds might interpret your question—<strong>MultiMind</strong> delivers diverse, insightful, and even surprising answers with every prompt.</p>
+  </div>
 
-🧠 Powered by Multiple Free Models: Currently supports:
+  <h2>✨ Key Features</h2>
+  <ul>
+    <li>💬 <strong>One Prompt, Many Minds:</strong> Get responses from multiple AI models or personas in parallel.</li>
+    <li>🧠 <strong>Powered by Multiple Free Models:</strong> Currently supports:
+      <ul>
+        <li><code>llama3.1:latest</code></li>
+        <li><code>gemma2:9b</code></li>
+        <li><code>mistral-nemo:latest</code></li>
+      </ul>
+    </li>
+    <li>🎭 <strong>Diverse AI Personas:</strong> Each AI has its own style, tone, and way of thinking.</li>
+    <li>⚡ <strong>Real-Time Chat Interface:</strong> Built with Flutter for a fast, responsive, and beautiful user experience.</li>
+    <li>🌐 <strong>Web-Ready:</strong> Easily accessible through the browser—no installs needed.</li>
+    <li>🧩 <strong>Modular Design:</strong> Easy to expand and plug in new models or personas.</li>
+  </ul>
 
-llama3.1:latest
+  <h2>🚀 Getting Started</h2>
+  <div class="section">
+    <h3>📦 Prerequisites</h3>
+    <ul>
+      <li>Flutter SDK installed (latest stable version recommended)</li>
+      <li>Dart SDK</li>
+      <li>An IDE like VS Code or Android Studio</li>
+      <li>Internet connection (for fetching responses from AI APIs)</li>
+    </ul>
 
-gemma2:9b
+    <h3>🔧 Setup Instructions</h3>
+    <ol>
+      <li><strong>Clone the Repository:</strong>
+        <pre><code>git clone https://github.com/yourusername/multimind.git
+cd multimind</code></pre>
+      </li>
+      <li><strong>Install Dependencies:</strong>
+        <pre><code>flutter pub get</code></pre>
+      </li>
+      <li><strong>Add API Keys:</strong>
+        <ul>
+          <li>Create a <code>.env</code> file or configure <code>api_keys.dart</code>.</li>
+          <li>Add your API keys for the supported AI models (e.g., OpenRouter, Hugging Face, etc.).</li>
+        </ul>
+      </li>
+      <li><strong>Run the App:</strong>
+        <pre><code>flutter run -d chrome</code></pre>
+      </li>
+    </ol>
+  </div>
 
-mistral-nemo:latest
+  <h2>🛠️ How to Use</h2>
+  <ul>
+    <li>Open the app in your browser.</li>
+    <li>Type a prompt in the chat input box.</li>
+    <li>Hit send, and watch multiple AI models respond simultaneously.</li>
+    <li>Scroll through the responses, compare insights, and interact with individual AIs if needed.</li>
+  </ul>
 
-🎭 Diverse AI Personas: Each AI has its own style, tone, and way of thinking.
+  <h2>📌 Example Use Cases</h2>
+  <ul>
+    <li>🔍 Get multiple answers for a single query</li>
+    <li>🧠 Brainstorm creatively with different thinking styles</li>
+    <li>🗣️ Compare professional, casual, and humorous tones in one go</li>
+    <li>📚 Use it as an educational tool to explore different viewpoints</li>
+  </ul>
 
-⚡ Real-Time Chat Interface: Built with Flutter for a fast, responsive, and beautiful user experience.
-
-🌐 Web-Ready: Easily accessible through the browser—no installs needed.
-
-🧩 Modular Design: Easy to expand and plug in new models or personas.
-
-🚀 Getting Started
-📦 Prerequisites
-Flutter SDK installed (latest stable version recommended)
-
-Dart SDK
-
-An IDE like VS Code or Android Studio
-
-Internet connection (for fetching responses from AI APIs)
-
-🔧 Setup Instructions
-
-1.Clone the Repository:
-  git clone https://github.com/yourusername/multimind.git
-  cd multimind
-2.Install Dependencies:
-  flutter pub get
-3.Add API Keys
-4.Create a .env file or configure api_keys.dart (based on your project structure).
-5.Add your API keys for the supported AI models (e.g., OpenRouter, Hugging Face, etc.).
-6.Run the App:
-  flutter run -d chrome
-  
-🛠️ How to Use
-Open the app in your browser.
-
-Type a prompt in the chat input box.
-
-Hit send, and watch multiple AI models respond simultaneously.
-
-Scroll through the responses, compare insights, and interact with individual AIs if needed.
-
-📌 Example Use Cases
-🔍 Get multiple answers for a single query
-
-🧠 Brainstorm creatively with different thinking styles
-
-🗣️ Compare professional, casual, and humorous tones in one go
-
-📚 Use it as an educational tool to explore different viewpoints
+</body>
+</html>
