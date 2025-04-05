@@ -95,7 +95,7 @@ cd multimind</code></pre>
   <div class="section">
     <p>Have questions, feedback, or need support? Reach out:</p>
     <ul>
-      <li>Email: <a href="mailto:multimind.support@example.com">multimind.support@example.com</a></li>
+      <li>Email: <a href="mailto:jiyabera3108@gmail.com">multimind.support@example.com</a></li>
       <li>GitHub Issues: <a href="https://github.com/yourusername/multimind/issues" target="_blank">Report bugs or request features</a></li>
     </ul>
   </div>
