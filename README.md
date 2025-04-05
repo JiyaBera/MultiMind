@@ -84,17 +84,11 @@ cd multimind</code></pre>
     </ul>
   </div>
 
-  <h2>🤝 Contributing</h2>
+ <h2>🤝 Contributing</h2>
   <div class="section">
-    <p>We welcome contributions! If you'd like to improve MultiMind, fix bugs, or add features, feel free to fork the repo and submit a pull request.</p>
-    <p>Steps to contribute:</p>
-    <ol>
-      <li>Fork the repository</li>
-      <li>Create a new branch: <code>git checkout -b feature-name</code></li>
-      <li>Commit your changes: <code>git commit -m "Add feature"</code></li>
-      <li>Push to your fork: <code>git push origin feature-name</code></li>
-      <li>Open a pull request</li>
-    </ol>
+    <p>We’re glad you’re interested in improving MultiMind! For major changes, please <strong>open an issue first</strong> to discuss what you would like to change.</p>
+    <p>This helps us ensure your idea aligns with the project direction and avoids duplicated effort.</p>
+    <p>Feel free to report bugs, suggest features, or ask questions via GitHub Issues.</p>
   </div>
 
   <h2>📬 Contact</h2>
