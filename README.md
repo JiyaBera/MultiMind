@@ -75,5 +75,36 @@ cd multimind</code></pre>
     <li>📚 Use it as an educational tool to explore different viewpoints</li>
   </ul>
 
+  <h2>🖼️ Screenshots</h2>
+  <div class="section">
+    <p>Here are some screenshots to give you a feel for the app:</p>
+    <ul>
+      <li><img src="assets/screenshots/home_page.png" alt="Home Page" width="600"></li>
+      <li><img src="assets/screenshots/multi_response_view.png" alt="Multi-Response View" width="600"></li>
+    </ul>
+  </div>
+
+  <h2>🤝 Contributing</h2>
+  <div class="section">
+    <p>We welcome contributions! If you'd like to improve MultiMind, fix bugs, or add features, feel free to fork the repo and submit a pull request.</p>
+    <p>Steps to contribute:</p>
+    <ol>
+      <li>Fork the repository</li>
+      <li>Create a new branch: <code>git checkout -b feature-name</code></li>
+      <li>Commit your changes: <code>git commit -m "Add feature"</code></li>
+      <li>Push to your fork: <code>git push origin feature-name</code></li>
+      <li>Open a pull request</li>
+    </ol>
+  </div>
+
+  <h2>📬 Contact</h2>
+  <div class="section">
+    <p>Have questions, feedback, or need support? Reach out:</p>
+    <ul>
+      <li>Email: <a href="mailto:multimind.support@example.com">multimind.support@example.com</a></li>
+      <li>GitHub Issues: <a href="https://github.com/yourusername/multimind/issues" target="_blank">Report bugs or request features</a></li>
+    </ul>
+  </div>
+
 </body>
 </html>
