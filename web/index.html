@@ -31,8 +31,45 @@
 
   <title>ollama_chat_app</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Add preload for Roboto font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Preload CanvasKit -->
+  <script>
+    // Preload CanvasKit
+    window.addEventListener('load', function() {
+      var script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/flutter-canvaskit/f73bfc4522dd0bc87bbcdb4bb3088082755c5e87/chromium/canvaskit.js';
+      script.type = 'text/javascript';
+      document.body.appendChild(script);
+    });
+  </script>
 </head>
 <body>
+  <!-- Add loading indicator -->
+  <div id="loading">
+    <style>
+      body {
+        background-color: #303030;
+        margin: 0;
+      }
+      #loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .loading-text {
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+      }
+    </style>
+    <div class="loading-text">Loading...</div>
+  </div>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
