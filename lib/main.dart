@@ -113,6 +113,7 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
                 children: [
                   // Search History Sidebar
                   Container(
+            
                     width: 300,
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Column(
