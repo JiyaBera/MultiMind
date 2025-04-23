@@ -81,7 +81,10 @@ cd multimind</code></pre>
     <ul>
       <li>
 <img src="https://github.com/user-attachments/assets/bb8baecd-43d0-4992-bbda-3d1200de7a09" alt="Home Page" width="600"></li>
-      <li><img src="assets/screenshots/multi_response_view.png" alt="Multi-Response View" width="600"></li>
+      <li><img src="https://github.com/user-attachments/assets/3e2ddca8-52ef-401d-880b-6a2af1605cea" alt="Multi-Response View" width="600"></li>
+      <li><img src="https://github.com/user-attachments/assets/74e74f50-8f58-4aaf-b56e-444e697d042c" alt="Multi-Response View" width="600"></li>
+      <li><img src="https://github.com/user-attachments/assets/60af97e5-5388-4399-a542-4baaf756f1b5" alt="Multi-Response View" width="600"></li>
+      <li><img src="https://github.com/user-attachments/assets/d06854ef-462b-4e2b-aada-ecc44ab9c2f0" alt="Multi-Response View" width="600"></li>
     </ul>
   </div>
 
