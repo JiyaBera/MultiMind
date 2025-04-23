@@ -79,7 +79,8 @@ cd multimind</code></pre>
   <div class="section">
     <p>Here are some screenshots to give you a feel for the app:</p>
     <ul>
-      <li><img src="assets/screenshots/home_page.png" alt="Home Page" width="600"></li>
+      <li>![image](https://github.com/user-attachments/assets/bb8baecd-43d0-4992-bbda-3d1200de7a09)
+<img src="assets/screenshots/home_page.png" alt="Home Page" width="600"></li>
       <li><img src="assets/screenshots/multi_response_view.png" alt="Multi-Response View" width="600"></li>
     </ul>
   </div>
