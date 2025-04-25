@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:ollama_dart/ollama_dart.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth/auth_service.dart';
+import 'screens/login_screen.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final _authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Ollama Chat App',
       theme: ThemeData.dark(),
-      home: OllamaChatPage(),
+      home: StreamBuilder<User?>(
+        stream: _authService.authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.hasData) {
+            return OllamaChatPage();
+          }
+          
+          return LoginScreen();
+        },
+      ),
     );
   }
 }
@@ -27,29 +51,114 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
   final List<ChatGroup> _chatGroups = [];
   bool _isLoading = false;
   final List<String> searchHistory = [];
+  final _authService = AuthService();
   
   bool _isHistoryVisible = false;  // Controls search history visibility
   String? selectedPrompt;  // Tracks which prompt is selected to show
 
   final client = OllamaClient(
-    baseUrl: 'https://709c-136-233-130-145.ngrok-free.app/api',
+    baseUrl: 'https://cc87-136-233-130-145.ngrok-free.app/api',
   );
 
   final List<String> models = ['llama3.1:latest', 'gemma2:9b', 'mistral-nemo:latest'];
 
+  Future<void> _handleLogout() async {
+    try {
+      await _authService.signOut();
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => LoginScreen()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      print('Error during logout: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error during logout. Please try again.')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isSmallScreen = screenSize.width < 600;
+    final padding = isSmallScreen ? 16.0 : 24.0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AI Model Comparison'),
-        leading: IconButton(  // Three-dash menu
+        leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
             setState(() {
-              _isHistoryVisible = !_isHistoryVisible;  // Toggle search history
+              _isHistoryVisible = !_isHistoryVisible;
             });
           },
         ),
+        actions: [
+          StreamBuilder<User?>(
+            stream: _authService.authStateChanges,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return PopupMenuButton<String>(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        snapshot.data!.email!.substring(0, 1).toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onSelected: (value) async {
+                    if (value == 'logout') {
+                      await _handleLogout();
+                    } else if (value == 'profile') {
+                      _showProfileDialog(context, snapshot.data!);
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem<String>(
+                      value: 'profile',
+                      child: Row(
+                        children: [
+                          Icon(Icons.person),
+                          SizedBox(width: 8),
+                          Text('Account Info'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'logout',
+                      child: Row(
+                        children: [
+                          Icon(Icons.logout),
+                          SizedBox(width: 8),
+                          Text('Logout'),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return SizedBox.shrink();
+            },
+          ),
+          SizedBox(width: 8),
+        ],
       ),
       body: Stack(
         children: [
@@ -57,12 +166,12 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            padding: EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(padding),
             child: Column(
               children: [
                 // Input Section
                 Container(
-                  constraints: BoxConstraints(maxWidth: 800),
+                  constraints: BoxConstraints(maxWidth: isSmallScreen ? double.infinity : 800),
                   margin: EdgeInsets.only(bottom: 24),
                   child: Column(
                     children: [
@@ -71,12 +180,23 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
                         decoration: InputDecoration(
                           labelText: 'Enter your prompt',
                           border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: isSmallScreen ? 12 : 16,
+                          ),
                         ),
                       ),
                       SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => _sendMessage(_controller.text),
                         child: Text('Generate Responses'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, isSmallScreen ? 45 : 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.white, width: 1),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -108,13 +228,12 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
           // Search History Overlay - Only visible when _isHistoryVisible is true
           if (_isHistoryVisible)
             Container(
-              color: Colors.black54,  // Semi-transparent overlay
+              color: Colors.black54,
               child: Row(
                 children: [
                   // Search History Sidebar
                   Container(
-            
-                    width: 300,
+                    width: isSmallScreen ? screenSize.width * 0.8 : 300,
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Column(
                       children: [
@@ -132,7 +251,7 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
                               Text(
                                 'Search History',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: isSmallScreen ? 18 : 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -153,11 +272,16 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
                             itemCount: searchHistory.length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                title: Text(searchHistory[index]),
+                                title: Text(
+                                  searchHistory[index],
+                                  style: TextStyle(
+                                    fontSize: isSmallScreen ? 14 : 16,
+                                  ),
+                                ),
                                 onTap: () {
                                   setState(() {
                                     selectedPrompt = searchHistory[index];
-                                    _isHistoryVisible = false;  // Hide search history
+                                    _isHistoryVisible = false;
                                   });
                                 },
                               );
@@ -183,6 +307,54 @@ class _OllamaChatPageState extends State<OllamaChatPage> {
             ),
         ],
       ),
+    );
+  }
+
+  void _showProfileDialog(BuildContext context, User user) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Account Information'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Text(
+                    user.email!.substring(0, 1).toUpperCase(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                title: Text('Email'),
+                subtitle: Text(user.email ?? 'No email'),
+              ),
+              SizedBox(height: 8),
+              ListTile(
+                leading: Icon(Icons.verified_user),
+                title: Text('Email Verified'),
+                subtitle: Text(user.emailVerified ? 'Yes' : 'No'),
+              ),
+              SizedBox(height: 8),
+              ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('Last Sign In'),
+                subtitle: Text(user.metadata.lastSignInTime?.toString() ?? 'Unknown'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -244,6 +416,10 @@ class ChatGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isSmallScreen = screenSize.width < 600;
+    final padding = isSmallScreen ? 8.0 : 16.0;
+
     return Container(
       margin: EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
@@ -258,21 +434,30 @@ class ChatGroupWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Prompt: ${group.prompt}',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: isSmallScreen ? 16 : 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
           ),
-          ...group.responses.map((response) => ModelCard(response: response)),
+          isSmallScreen
+              ? Column(
+                  children: group.responses.map((response) => ModelCard(response: response)).toList(),
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: group.responses.map((response) => Expanded(
+                    child: ModelCard(response: response),
+                  )).toList(),
+                ),
         ],
       ),
     );
@@ -286,12 +471,17 @@ class ModelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isSmallScreen = screenSize.width < 600;
+    final padding = isSmallScreen ? 8.0 : 16.0;
+    final margin = isSmallScreen ? 4.0 : 8.0;
+
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
+      margin: EdgeInsets.all(margin),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade800),
-        ),
+        border: Border.all(color: Colors.grey.shade800),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,23 +489,35 @@ class ModelCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                response.model,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Expanded(
+                child: Text(
+                  response.model,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: isSmallScreen ? 14 : 16,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 '${response.timestamp.toLocal()}'.split('.')[0],
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: isSmallScreen ? 12 : 14,
+                ),
               ),
             ],
           ),
           SizedBox(height: 8),
-          Text(response.text),
+          Text(
+            response.text,
+            style: TextStyle(
+              fontSize: isSmallScreen ? 14 : 16,
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
